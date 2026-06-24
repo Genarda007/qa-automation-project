@@ -1,14 +1,17 @@
 from dbm import error
 
+import pytest
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 
+@pytest.mark.smoke
 def test_valid_login(page):
     login = LoginPage(page)
     login.navigate()
     login.login("standard_user", "secret_sauce")
     assert page.url == "https://www.saucedemo.com/inventory.html"
 
+@pytest.mark.smoke
 def test_invalid_login(page):
     login = LoginPage(page)
     login.navigate()
@@ -16,6 +19,7 @@ def test_invalid_login(page):
     error_message = page.locator("[data-test='error']").inner_text()
     assert "Username and password do not match" in error_message
 
+@pytest.mark.regression
 def test_locked_out_user(page):
     login = LoginPage(page)
     login.navigate()
@@ -23,6 +27,7 @@ def test_locked_out_user(page):
     error_message = page.locator("[data-test='error']").inner_text()
     assert "Sorry, this user has been locked out" in error_message
 
+@pytest.mark.regression
 def test_inventory_title(page):
     login = LoginPage(page)
     login.navigate()
@@ -31,6 +36,7 @@ def test_inventory_title(page):
     title = inventory.get_title()
     assert title == "Products"
 
+@pytest.mark.regression
 def test_add_item_to_cart(page):
     login = LoginPage(page)
     login.navigate()
@@ -40,4 +46,13 @@ def test_add_item_to_cart(page):
     count = inventory.get_cart_count()
     assert count == "1"
 
-    
+@pytest.mark.parametrize("username,password,expected_url", [
+    ("standard_user", "secret_sauce", "https://www.saucedemo.com/inventory.html"),
+    ("problem_user", "secret_sauce", "https://www.saucedemo.com/inventory.html"),
+    ("performance_glitch_user", "secret_sauce", "https://www.saucedemo.com/inventory.html"),
+])
+def test_multiple_users_can_login(page, username, password, expected_url):
+    login = LoginPage(page)
+    login.navigate()
+    login.login(username, password)
+    assert page.url == expected_url
