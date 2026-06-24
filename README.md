@@ -1,3 +1,6 @@
+![Tests](https://github.com/Genarda007/qa-automation-project/actions/workflows/tests.yml/badge.svg)
+
+
 # QA Automation Project
 
 Automated UI testing project built with Python, Pytest, and Playwright using the SauceDemo application.
