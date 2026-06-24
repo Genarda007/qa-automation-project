@@ -22,9 +22,9 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pytest
-          pip install playwright
           pip install pytest-playwright
-          playwright install chromium
+          pip install playwright
+          python -m playwright install --with-deps chromium
 
       - name: Run tests
         run: pytest tests/ -v
