@@ -1,55 +1,55 @@
 ![Tests](https://github.com/Genarda007/qa-automation-project/actions/workflows/tests.yml/badge.svg)
 
-
 # QA Automation Project
 
-Automated UI testing project built with Python, Pytest, and Playwright using the SauceDemo application.
-
-## Test Coverage
-
-* Valid login
-* Invalid login (negative test)
-* Locked out user (negative test)
-* Inventory page title verification
-* Add item to cart
-
-## Project Structure
-
-* `pages/` — Page Object Model classes
-* `tests/` — Test cases
-* `conftest.py` — Pytest fixtures
-* `pytest.ini` — Pytest configuration
+A Playwright + pytest automation framework targeting [Saucedemo.com](https://www.saucedemo.com), built using Page Object Model architecture.
 
 ## Tech Stack
+- Python 3
+- Playwright
+- pytest
+- pytest-html
+- Page Object Model (POM)
+- GitHub Actions CI/CD
 
-* Python
-* Pytest
-* Playwright
+## Project Structure
+## Test Coverage
+| Test | Type | Marker |
+|---|---|---|
+| Valid login | Positive | Smoke |
+| Invalid login | Negative | Smoke |
+| Locked out user | Negative | Regression |
+| Inventory title | Positive | Regression |
+| Add item to cart | Positive | Regression |
+| Multiple users login (3 users) | Data-driven | Regression |
 
-## Installation
+## How to Run
 
+### Setup
 ```bash
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
-playwright install
+playwright install chromium
 ```
 
-## Run Tests
-
+### Run all tests
 ```bash
-pytest
+pytest tests/ -v
 ```
 
-## Generate HTML Report
-
+### Run smoke tests only
 ```bash
-pytest --html=report.html --self-contained-html
+pytest tests/ -v -m smoke
 ```
 
-## Results
+### Run with HTML report
+```bash
+pytest tests/ -v --html=reports/report.html --self-contained-html
+```
 
-Current test suite:
+## Defects Found
+See [defect_log.md](defect_log.md) for documented bugs found during exploratory testing.
 
-* 5 tests passing
-* Cross-browser automation ready
-* Page Object Model design pattern implemented
-
+## CI/CD
+Tests run automatically on every push to main via GitHub Actions.
